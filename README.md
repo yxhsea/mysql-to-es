@@ -60,10 +60,22 @@ insert into goods values (2, 'test2', '2020-07-15 00:00:00', '2020-07-15 00:00:0
 ## 基于 Docker 创建 ElasticSearch 服务
 
 ```
-docker run --name=elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:6.4.0
+docker run -e ES_JAVA_OPTS="-Xms512m -Xmx512m" --name=elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:6.4.0
+
+sudo sysctl -w vm.max_map_count=262144
 ```
 
 ## 基于 Docker 创建 logstash 服务
+
+```
+docker run -it -d -p 5044:5044 \
+-p 5045:5045 \
+--name logstash \
+--net somenetwork \
+-v /docker/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml \
+-v /docker/logstash/conf.d/:/usr/share/logstash/conf.d/ \ 
+logstash:6.4.0
+```
 
 https://www.cnblogs.com/killer21/p/12170031.html
 
