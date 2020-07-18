@@ -188,3 +188,92 @@ select id, name, create_time, update_time from goods where update_time > :sql_la
 ```
 curl http://127.0.0.1:9200/goods/_search?pretty
 ```
+
+
+```
+// 创建索引并定义属性
+// PUT http://127.0.0.1/product
+
+{
+    "settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 1
+    },
+    "mappings": {
+        "properties": {
+            "product_id": {
+                "type": "integer"
+            },
+            "name" : {
+                "type": "text"
+            },
+            "sku": {
+                "type": "text"
+            },
+            "price": {
+                "type": "double"
+            },
+            "sales": {
+                "type": "integer"
+            },
+            "date_modified": {
+                "type": "date",
+                "format": "yyyy-MM-dd HH:mm:ss || yyyy-MM-dd || epoch_millis"
+            }
+        }
+    }
+}
+```
+
+```
+// 增加映射字段
+// http://127.0.0.1:9200/product/_mapping
+{
+	"properties": {
+		"test": {
+			"type": "integer"
+		}
+	}
+}   
+```
+
+```
+ES 开发涉及点：
+
+1、创建索引
+
+2、为索引建立 Mapping 映射关系
+
+3、增加索引映射关系字段
+
+4、删除索引映射关系字段
+
+mapping 中的字段不能直接删除，只能重新创建
+
+创建新索引
+新索引创建新mapping
+原索引导出数据到新索引
+新索引创建原索引一致的别名
+删除原索引
+
+5、从 MySQL 同步数据到 ES
+
+6、更新 ES 中的数据
+
+7、删除 ES 中的数据
+```
+
+```
+RabbitMQ
+
+消息发布订阅
+```
+
+
+```
+app 首页优化方案
+
+收藏动作异步化
+
+App 收藏动作触发 -> 调用 Api 接口 -> 将消息投入消息队列 -> 消费者消费消息 -> 入库 or ES
+```
